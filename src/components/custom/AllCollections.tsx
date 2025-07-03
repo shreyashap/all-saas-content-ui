@@ -44,7 +44,7 @@ export const AllCollections = ({
   };
 
   return (
-    <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:block gap-4 md:gap-6">
+    <div className="w-full grid grid-cols-1 xs:grid-cols-2 lg:block gap-4 md:gap-6">
       {collections.map((col) => (
         <CollectionCard
           key={col.collectionId}
@@ -54,7 +54,7 @@ export const AllCollections = ({
           langauge={col.language}
           onView={() => navigate(`/dashboard/${col.collectionId}`)}
           onEdit={() => alert(`Edit ${col.title}`)}
-          onDelete={() => handleDelete(col._id)}
+          onDelete={() => handleDelete(col.collectionId)}
         />
       ))}
     </div>

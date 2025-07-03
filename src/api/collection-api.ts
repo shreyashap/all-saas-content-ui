@@ -17,11 +17,34 @@ export const createCollection = async (data: CreateCollectionType) => {
 };
 
 export const deleteCollection = async (collectionId: string) => {
-  const res = await api.delete(`/collection/${collectionId}`);
+  const res = await api.delete(`/collection/delete/${collectionId}`);
   return res.data;
 };
 
-export const getContentByCollectionId = async (collectionId: string) => {
-  const res = await api.get(`/content?collectionId=${collectionId}`);
-  return res.data.data;
+export const getContentByCollectionId = async (filters: {
+  collectionId: string;
+  contentType?: string;
+  language?: string;
+  page: number;
+}) => {
+  let res;
+  if (filters.contentType && filters.language) {
+    res = await api.get(
+      `/content/pagination?collectionId=${filters.collectionId}&type=${filters.contentType}&language=${filters.language}&page=${filters.page}`
+    );
+  } else if (filters.contentType) {
+    res = await api.get(
+      `/content/pagination?collectionId=${filters.collectionId}&type=${filters.contentType}`
+    );
+  } else if (filters.language) {
+    res = await api.get(
+      `/content/pagination?collectionId=${filters.collectionId}&language=${filters.language}`
+    );
+  } else {
+    res = await api.get(
+      `/content/pagination?collectionId=${filters.collectionId}&page=${filters.page}`
+    );
+  }
+
+  return res.data;
 };

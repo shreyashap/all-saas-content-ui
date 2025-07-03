@@ -7,10 +7,10 @@ import { toast } from "sonner";
 
 export default function BulkUploadForm({
   collectionId,
-  onSuccess,
+  onCreated,
 }: {
   collectionId: string;
-  onSuccess: () => void;
+  onCreated: () => void;
 }) {
   const queryClient = useQueryClient();
   const [file, setFile] = useState<File | null>(null);
@@ -38,6 +38,7 @@ export default function BulkUploadForm({
         queryKey: ["collectionContent", collectionId],
       });
       toast.success("Content uploaded for review");
+      onCreated();
     },
     onError: (error) => {
       toast.error(error.message || "Failed to create collection.");
@@ -61,10 +62,7 @@ export default function BulkUploadForm({
     formData.append("file", file);
     formData.append("collectionId", collectionId);
 
-    console.log("✅ Uploading bulk file for:", collectionId, file);
-
     bulkUploadContentMutation.mutate(formData);
-    onSuccess();
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -86,7 +84,7 @@ export default function BulkUploadForm({
       {error && <p className="text-sm text-red-600">{error}</p>}
 
       <Button type="submit" className="w-full bg-brand hover:bg-brand-dark">
-        Upload
+        {bulkUploadContentMutation.isPending ? "Uploading..." : "Upload"}
       </Button>
     </form>
   );

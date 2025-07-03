@@ -1,8 +1,9 @@
 import { toast } from "sonner";
 import { Button } from "../../ui/button";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import { getReviewerContent, reviewContent } from "../../../api/reviewer-api";
 import { FlagDialog } from "./FlagDialog";
+import { useState } from "react";
 
 interface ContentItem {
   _id: string;
@@ -25,11 +26,15 @@ type ReviewPayload = {
 };
 
 export default function ReviewerDashboard() {
-  const queryClient = useQueryClient();
+  // const queryClient = useQueryClient();
+
+  const [refreshIndex, setRefreshIndex] = useState(0);
 
   const { data: contents = [], isLoading } = useQuery({
-    queryKey: ["reviewer"],
+    queryKey: ["reviewer", refreshIndex],
     queryFn: getReviewerContent,
+    refetchOnWindowFocus: false,
+    staleTime: 0,
   });
 
   const reviewContentMutation = useMutation({
@@ -38,10 +43,10 @@ export default function ReviewerDashboard() {
       await reviewContent(contentId, reviewStatus, reviewer, flagReasons);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["reviewer"] });
       toast.success(`Content reviewed`);
+      setRefreshIndex((prev) => prev + 1);
     },
-    onError: (err) => {
+    onError: (err: any) => {
       toast.error(err.message || "Failed to update the review.");
     },
   });
@@ -53,7 +58,7 @@ export default function ReviewerDashboard() {
       {isLoading ? (
         <p>Loading...</p>
       ) : contents.length === 0 ? (
-        <p className="text-gray-500">No content pending review.</p>
+        <p className="text-gray-500">No content pending for review.</p>
       ) : (
         <div className="w-full grid grid-cols-1 xs:grid-cols-2 lg:block gap-4 md:gap-6">
           {contents.map((content: ContentItem) => (

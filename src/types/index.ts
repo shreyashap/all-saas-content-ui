@@ -23,3 +23,34 @@ export interface CreateCollectionType {
   status: string;
   tags: string[] | undefined;
 }
+
+export interface ContentItem {
+  _id: string;
+  collectionId: string;
+  name: string;
+  contentType: string;
+  contentSourceData: {
+    language: string;
+    text: string;
+    audioUrl: string;
+    phonemes: string[];
+    wordCount: number;
+    wordFrequency: { [key: string]: number };
+    syllableCount: number;
+    syllableCountMap?: { [key: string]: number };
+    audioTitle?: string;
+  }[];
+  imagePath: string;
+  reviewStatus: string;
+  status: string;
+  publisher: string;
+  language: string;
+  contentIndex: number;
+  tags: string[];
+  createdAt: string;
+  updatedAt: string;
+  contentId: string;
+  flagReasons?: string;
+  flaggedBy?: string;
+  lastFlaggedOn?: string;
+}

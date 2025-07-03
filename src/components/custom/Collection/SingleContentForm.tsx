@@ -16,10 +16,10 @@ import { Plus, X } from "lucide-react";
 
 export default function SingleContentForm({
   collectionId,
-  onSuccess,
+  onCreated,
 }: {
   collectionId: string;
-  onSuccess: () => void;
+  onCreated: () => void;
 }) {
   const queryClient = useQueryClient();
   const {
@@ -78,10 +78,11 @@ export default function SingleContentForm({
         queryKey: ["collectionContent", collectionId],
       });
       toast.success("Content uploaded for review");
+      onCreated();
       reset();
     },
     onError: (error) => {
-      toast.error(error.message || "Failed to create collection.");
+      toast.error(error.message || "Failed to create content.");
     },
   });
 
@@ -92,7 +93,6 @@ export default function SingleContentForm({
     // };
 
     createContentMutation.mutate(data);
-    onSuccess();
   };
 
   return (

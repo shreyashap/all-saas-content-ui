@@ -1,7 +1,13 @@
 import { useState } from "react";
-import { Dialog, DialogContent, DialogTrigger } from "../../ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogTrigger,
+} from "../../ui/dialog";
 import { Button } from "../../ui/button";
 import { Textarea } from "../../ui/textarea";
+import { DialogTitle } from "@radix-ui/react-dialog";
 
 interface FlagDialogProps {
   onFlag: (reason: string) => void;
@@ -24,7 +30,10 @@ export const FlagDialog = ({ onFlag }: FlagDialogProps) => {
       </DialogTrigger>
 
       <DialogContent>
-        <h4 className="text-lg font-semibold mb-2">Provide flag reason</h4>
+        <DialogTitle className="font-semibold">Flag reason</DialogTitle>
+        <DialogDescription className="font-medium">
+          Provide a reason for flag
+        </DialogDescription>
         <Textarea
           placeholder="Explain why you're flagging this content..."
           value={reason}
