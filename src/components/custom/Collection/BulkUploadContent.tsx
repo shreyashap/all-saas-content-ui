@@ -41,7 +41,8 @@ export default function BulkUploadForm({
       onCreated();
     },
     onError: (error) => {
-      toast.error(error.message || "Failed to create collection.");
+      console.error(error);
+      toast.error("Failed to upload content.");
     },
   });
 

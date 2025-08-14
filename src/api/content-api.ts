@@ -39,3 +39,24 @@ export const deleteManyContents = async (ids: string[]) => {
   const res = await api.delete("/content/bulk-delete", { data: { ids } });
   return res;
 };
+
+export const getAllContent = async () => {
+  const res = await api.get("/content");
+  return res.data;
+};
+
+export const searchAndFilter = async (data: {
+  language?: string;
+  tokenArr?: string;
+  contentType?: string;
+}) => {
+  if (!data.contentType) {
+    data.contentType = "Text";
+  }
+
+  if (!data.language) {
+    data.language = "en";
+  }
+  const res = await api.post("/content/getContentByFilters", data);
+  return res.data;
+};

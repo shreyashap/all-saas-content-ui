@@ -22,6 +22,7 @@ export interface CreateCollectionType {
   language: string;
   status: string;
   tags: string[] | undefined;
+  tenantId: string;
 }
 
 export interface ContentItem {

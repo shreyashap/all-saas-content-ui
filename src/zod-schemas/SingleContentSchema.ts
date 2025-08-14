@@ -18,4 +18,10 @@ export const contentSchema = z.object({
     .optional(),
 });
 
+type AdditionalField = {
+  tenantId: string;
+};
+
 export type ContentFormType = z.infer<typeof contentSchema>;
+
+export type ExtendedContentFormType = ContentFormType & AdditionalField;

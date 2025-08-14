@@ -1,8 +1,8 @@
 import api from ".";
 import { type CreateCollectionType } from "../types";
 
-export const getCollection = async () => {
-  const res = await api.get("/collection");
+export const getCollection = async (tenantId: string) => {
+  const res = await api.get(`/collection/get-collection/${tenantId}`);
   return res.data.data;
 };
 
@@ -26,23 +26,24 @@ export const getContentByCollectionId = async (filters: {
   contentType?: string;
   language?: string;
   page: number;
+  tenantId: string;
 }) => {
   let res;
   if (filters.contentType && filters.language) {
     res = await api.get(
-      `/content/pagination?collectionId=${filters.collectionId}&type=${filters.contentType}&language=${filters.language}&page=${filters.page}`
+      `/content/pagination?collectionId=${filters.collectionId}&type=${filters.contentType}&language=${filters.language}&page=${filters.page}&tenantId=${filters.tenantId}`
     );
   } else if (filters.contentType) {
     res = await api.get(
-      `/content/pagination?collectionId=${filters.collectionId}&type=${filters.contentType}`
+      `/content/pagination?collectionId=${filters.collectionId}&type=${filters.contentType}&tenantId=${filters.tenantId}`
     );
   } else if (filters.language) {
     res = await api.get(
-      `/content/pagination?collectionId=${filters.collectionId}&language=${filters.language}`
+      `/content/pagination?collectionId=${filters.collectionId}&language=${filters.language}&tenantId=${filters.tenantId}`
     );
   } else {
     res = await api.get(
-      `/content/pagination?collectionId=${filters.collectionId}&page=${filters.page}`
+      `/content/pagination?collectionId=${filters.collectionId}&page=${filters.page}&tenantId=${filters.tenantId}`
     );
   }
 

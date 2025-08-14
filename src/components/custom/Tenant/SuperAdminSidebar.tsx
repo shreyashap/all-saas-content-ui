@@ -1,7 +1,5 @@
 import {
-  Building2,
   Home,
-  LucideListPlus,
   Menu,
   Plus,
   TableOfContents,
@@ -10,23 +8,11 @@ import {
   X,
 } from "lucide-react";
 import clsx from "clsx";
-import { Button } from "../ui/button";
+import { Button } from "../../ui/button";
 import React, { useEffect, useState, type SetStateAction } from "react";
 
 const navItems = {
   SuperAdmin: [
-    { label: "Dashboard", icon: <Home className="w-5 h-5" /> },
-    // { label: "Create Collection", icon: <Plus className="w-5 h-5" /> },
-    // { label: "Content", icon: <TableOfContents className="w-5 h-5" /> },
-    // {
-    //   label: "Create User",
-    //   icon: <UserRoundPenIcon className="w-5 h-5" />,
-    // },
-    { label: "Create Tenant", icon: <LucideListPlus className="w-5 h-5" /> },
-    { label: "Tenants", icon: <Building2 className="w-5 h-5" /> },
-    { label: "Users", icon: <Users className="w-5 h-5" /> },
-  ],
-  Admin: [
     { label: "Dashboard", icon: <Home className="w-5 h-5" /> },
     { label: "Create Collection", icon: <Plus className="w-5 h-5" /> },
     { label: "Content", icon: <TableOfContents className="w-5 h-5" /> },
@@ -36,15 +22,9 @@ const navItems = {
     },
     { label: "Users", icon: <Users className="w-5 h-5" /> },
   ],
-  Author: [
-    { label: "Dashboard", icon: <Home className="w-5 h-5" /> },
-    { label: "Create Collection", icon: <Plus className="w-5 h-5" /> },
-    { label: "Content", icon: <TableOfContents className="w-5 h-5" /> },
-  ],
-  Reviewer: [{ label: "Dashboard", icon: <Home className="w-5 h-5" /> }],
 };
 
-export const Sidebar = ({
+export const SuperAdminSidebar = ({
   setSection,
   section,
 }: {
@@ -52,9 +32,7 @@ export const Sidebar = ({
   section: string;
 }) => {
   const [open, setOpen] = useState(false);
-  const [role, setRole] = useState<
-    "SuperAdmin" | "Admin" | "Author" | "Reviewer" | ""
-  >("");
+  const [role, setRole] = useState<"SuperAdmin" | "">("");
 
   useEffect(() => {
     const user = localStorage.getItem("user");

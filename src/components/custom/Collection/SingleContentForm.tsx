@@ -7,6 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   contentSchema,
   type ContentFormType,
+  type ExtendedContentFormType,
 } from "../../../zod-schemas/SingleContentSchema";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createContent } from "../../../api/content-api";
@@ -70,7 +71,7 @@ export default function SingleContentForm({
   };
 
   const createContentMutation = useMutation({
-    mutationFn: async (data: ContentFormType) => {
+    mutationFn: async (data: ExtendedContentFormType) => {
       await createContent(data);
     },
     onSuccess: () => {
@@ -82,7 +83,8 @@ export default function SingleContentForm({
       reset();
     },
     onError: (error) => {
-      toast.error(error.message || "Failed to create content.");
+      console.error(error);
+      toast.error("Failed to create content.");
     },
   });
 
@@ -92,7 +94,18 @@ export default function SingleContentForm({
     //   tags: data.tags?.map((tag) => tag.value),
     // };
 
-    createContentMutation.mutate(data);
+    const user = localStorage.getItem("user");
+
+    if (user) {
+      const userInfo = JSON.parse(user);
+      const id = userInfo.tenantId;
+      if (!id) {
+        const tenantId = localStorage.getItem("tenantId") as string;
+        createContentMutation.mutate({ tenantId, ...data });
+      } else {
+        createContentMutation.mutate({ tenantId: id, ...data });
+      }
+    }
   };
 
   return (
